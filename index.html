@@ -22,42 +22,46 @@
       <label>Что активируем?</label>
 
       <div class="ritual-grid">
-        <button type="button" class="ritual-option active" data-ritual="energy">
+        <button type="button" class="ritual-option" data-ritual="energy">
           <span class="icon">✨</span>
-          <span>Удача</span>
+          <span>Активировать удачу</span>
         </button>
 
         <button type="button" class="ritual-option" data-ritual="chance">
           <span class="icon">📈</span>
-          <span>Шансы</span>
+          <span>Подкрутить шансы</span>
         </button>
 
         <button type="button" class="ritual-option" data-ritual="cat">
           <span class="icon">🐈</span>
-          <span>Кот</span>
+          <span>Погладить виртуального кота</span>
         </button>
 
         <button type="button" class="ritual-option" data-ritual="dice">
           <span class="icon">🎲</span>
-          <span>Судьба</span>
+          <span>Бросить кости судьбы</span>
         </button>
 
         <button type="button" class="ritual-option" data-ritual="boost">
           <span class="icon">🚀</span>
-          <span>Буст</span>
+          <span>Включить режим буста</span>
         </button>
 
         <button type="button" class="ritual-option" data-ritual="calm">
           <span class="icon">🍵</span>
-          <span>Спокойствие</span>
+          <span>Заварить спокойствие</span>
         </button>
       </div>
 
       <button type="button" id="startBtn" class="main-button">Призвать удачу</button>
 
       <div class="magic-zone" id="magicZone">
-        <div class="magic-circle">🍀</div>
-        <div class="magic-sparkles">✦ ✧ ✦</div>
+        <div class="magic-portal">
+          <div class="portal-ring ring-one"></div>
+          <div class="portal-ring ring-two"></div>
+          <div class="portal-core">✦</div>
+        </div>
+        <div class="magic-sparkles">✧ ✦ ✧</div>
       </div>
 
       <div class="result hidden" id="result">
@@ -72,68 +76,118 @@
     </section>
   </main>
 
- <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const wishInput = document.getElementById("wish");
-  const startBtn = document.getElementById("startBtn");
-  const resultBox = document.getElementById("result");
-  const resultText = document.getElementById("resultText");
-  const growthText = document.getElementById("growthText");
-  const magicZone = document.getElementById("magicZone");
-  const historyList = document.getElementById("historyList");
-  const ritualOptions = document.querySelectorAll(".ritual-option");
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const wishInput = document.getElementById("wish");
+      const startBtn = document.getElementById("startBtn");
+      const resultBox = document.getElementById("result");
+      const resultText = document.getElementById("resultText");
+      const growthText = document.getElementById("growthText");
+      const magicZone = document.getElementById("magicZone");
+      const historyList = document.getElementById("historyList");
+      const ritualOptions = document.querySelectorAll(".ritual-option");
 
-  let selectedRitual = "energy";
-  let selectedRitualName = "Удача";
+      let selectedRitual = "";
+      let selectedRitualName = "";
 
-  const ritualTexts = {
-    energy: ["Удача активирована. Всё стало чуть светлее и подозрительно перспективнее."],
-    chance: ["Шансы подкручены. Вероятность успеха выглядит бодрее обычного."],
-    cat: ["Виртуальный кот поглажен. Он замурчал, а это хороший знак."],
-    dice: ["Кости судьбы брошены. Выпало что-то очень похожее на хороший вариант."],
-    boost: ["Буст включён. На ближайшее время шансы выглядят увереннее."],
-    calm: ["Спокойствие заварено. Паника поставлена на паузу."]
-  };
+      const ritualTexts = {
+        energy: [
+          "Удача активирована. Воздух стал легче, внутренний хаос — тише, а обстоятельства получили мягкий пинок в правильную сторону.",
+          "Сигнал отправлен. Удача уже делает вид, что просто случайно проходила мимо, но мы-то всё понимаем."
+        ],
+        chance: [
+          "Шансы аккуратно подкручены. Вероятность благоприятного исхода ведёт себя бодрее, чем минуту назад.",
+          "Коэффициент успеха повышен. Без громких обещаний, но с уверенным ощущением, что всё может сложиться лучше."
+        ],
+        cat: [
+          "Виртуальный кот поглажен. Он замурчал, прищурился и одобрил происходящее всем своим загадочным видом.",
+          "Кот принял запрос, улёгся рядом с удачей и сделал вид, что теперь всё под контролем."
+        ],
+        dice: [
+          "Кости судьбы брошены. Выпало что-то очень похожее на хороший знак, но судьба просила не душнить и не перепроверять.",
+          "Судьба сделала бросок, посмотрела на результат и решила пока не мешать."
+        ],
+        boost: [
+          "Режим буста включён. Внутренний двигатель запустился, шансы стали выглядеть увереннее, а сомнения — менее убедительно.",
+          "Ускорение активировано. Теперь главное — не потратить этот заряд на тревожное обновление почты каждые две минуты."
+        ],
+        calm: [
+          "Спокойствие заварено. Паника поставлена на паузу, лишний шум приглушён, фокус вернулся на своё место.",
+          "Внутренний чайник вскипел в хорошем смысле. Теперь можно действовать спокойнее и точнее."
+        ]
+      };
 
-  ritualOptions.forEach(function(option) {
-    option.addEventListener("click", function() {
-      ritualOptions.forEach(function(item) {
-        item.classList.remove("active");
+      const confettiSymbols = ["✨", "🍀", "⭐", "💫", "🌸", "🪄"];
+
+      ritualOptions.forEach(function(option) {
+        option.addEventListener("click", function() {
+          ritualOptions.forEach(function(item) {
+            item.classList.remove("active");
+          });
+
+          option.classList.add("active");
+          selectedRitual = option.getAttribute("data-ritual");
+          selectedRitualName = option.innerText.trim();
+        });
       });
 
-      option.classList.add("active");
-      selectedRitual = option.getAttribute("data-ritual");
-      selectedRitualName = option.innerText.trim();
+      function getRandomItem(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+
+      function launchConfetti() {
+        for (let i = 0; i < 30; i++) {
+          const item = document.createElement("div");
+          item.className = "confetti";
+          item.textContent = getRandomItem(confettiSymbols);
+          item.style.left = Math.random() * 100 + "vw";
+          item.style.fontSize = Math.floor(Math.random() * 10 + 16) + "px";
+          item.style.animationDelay = Math.random() * 0.35 + "s";
+
+          document.body.appendChild(item);
+
+          setTimeout(function() {
+            item.remove();
+          }, 2200);
+        }
+      }
+
+      startBtn.addEventListener("click", function() {
+        const wish = wishInput.value.trim();
+
+        if (!wish) {
+          resultBox.classList.remove("hidden");
+          growthText.textContent = "Сначала нужно желание";
+          resultText.textContent = "Удача любит конкретику. Хотя бы примерно.";
+          return;
+        }
+
+        if (!selectedRitual) {
+          resultBox.classList.remove("hidden");
+          growthText.textContent = "Сначала выбери действие";
+          resultText.textContent = "Нужно активировать хотя бы один способ призыва удачи.";
+          return;
+        }
+
+        magicZone.classList.remove("active");
+        void magicZone.offsetWidth;
+        magicZone.classList.add("active");
+
+        const growth = Math.floor(Math.random() * 81) + 70;
+        const phrases = ritualTexts[selectedRitual];
+        const text = getRandomItem(phrases);
+
+        growthText.textContent = "Вероятность успеха выросла на " + growth + "%";
+        resultText.textContent = text;
+        resultBox.classList.remove("hidden");
+
+        launchConfetti();
+
+        const li = document.createElement("li");
+        li.textContent = selectedRitualName + " — вероятность успеха +" + growth + "%";
+        historyList.prepend(li);
+      });
     });
-  });
-
-  startBtn.addEventListener("click", function() {
-    const wish = wishInput.value.trim();
-
-    if (!wish) {
-      resultBox.classList.remove("hidden");
-      growthText.textContent = "Сначала нужно желание";
-      resultText.textContent = "Удача любит конкретику. Хотя бы примерно.";
-      return;
-    }
-
-    magicZone.classList.remove("active");
-    void magicZone.offsetWidth;
-    magicZone.classList.add("active");
-
-    const growth = Math.floor(Math.random() * 81) + 70;
-    const phrases = ritualTexts[selectedRitual] || ritualTexts.energy;
-    const text = phrases[Math.floor(Math.random() * phrases.length)];
-
-    growthText.textContent = "Вероятность успеха выросла на " + growth + "%";
-    resultText.textContent = text + " Запрос: «" + wish + "».";
-    resultBox.classList.remove("hidden");
-
-    const li = document.createElement("li");
-    li.textContent = selectedRitualName + ": «" + wish + "» — вероятность успеха +" + growth + "%";
-    historyList.prepend(li);
-  });
-});
-</script>
+  </script>
 </body>
 </html>
