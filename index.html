@@ -72,6 +72,68 @@
     </section>
   </main>
 
-  <script src="script.js"></script>
+ <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wishInput = document.getElementById("wish");
+  const startBtn = document.getElementById("startBtn");
+  const resultBox = document.getElementById("result");
+  const resultText = document.getElementById("resultText");
+  const growthText = document.getElementById("growthText");
+  const magicZone = document.getElementById("magicZone");
+  const historyList = document.getElementById("historyList");
+  const ritualOptions = document.querySelectorAll(".ritual-option");
+
+  let selectedRitual = "energy";
+  let selectedRitualName = "Удача";
+
+  const ritualTexts = {
+    energy: ["Удача активирована. Всё стало чуть светлее и подозрительно перспективнее."],
+    chance: ["Шансы подкручены. Вероятность успеха выглядит бодрее обычного."],
+    cat: ["Виртуальный кот поглажен. Он замурчал, а это хороший знак."],
+    dice: ["Кости судьбы брошены. Выпало что-то очень похожее на хороший вариант."],
+    boost: ["Буст включён. На ближайшее время шансы выглядят увереннее."],
+    calm: ["Спокойствие заварено. Паника поставлена на паузу."]
+  };
+
+  ritualOptions.forEach(function(option) {
+    option.addEventListener("click", function() {
+      ritualOptions.forEach(function(item) {
+        item.classList.remove("active");
+      });
+
+      option.classList.add("active");
+      selectedRitual = option.getAttribute("data-ritual");
+      selectedRitualName = option.innerText.trim();
+    });
+  });
+
+  startBtn.addEventListener("click", function() {
+    const wish = wishInput.value.trim();
+
+    if (!wish) {
+      resultBox.classList.remove("hidden");
+      growthText.textContent = "Сначала нужно желание";
+      resultText.textContent = "Удача любит конкретику. Хотя бы примерно.";
+      return;
+    }
+
+    magicZone.classList.remove("active");
+    void magicZone.offsetWidth;
+    magicZone.classList.add("active");
+
+    const growth = Math.floor(Math.random() * 81) + 70;
+    const phrases = ritualTexts[selectedRitual] || ritualTexts.energy;
+    const text = phrases[Math.floor(Math.random() * phrases.length)];
+
+    growthText.textContent = "Вероятность успеха выросла на " + growth + "%";
+    resultText.textContent = text + " Запрос: «" + wish + "».";
+    resultBox.classList.remove("hidden");
+
+    const li = document.createElement("li");
+    li.textContent = selectedRitualName + ": «" + wish + "» — вероятность успеха +" + growth + "%";
+    historyList.prepend(li);
+  });
+});
+</script>
 </body>
 </html>
