@@ -12,6 +12,7 @@ body {
     radial-gradient(circle at top right, #d9c7ff 0, transparent 34%),
     radial-gradient(circle at bottom, #bff4e8 0, transparent 36%),
     linear-gradient(135deg, #fffaf0, #f3eeff 48%, #eefcff);
+  overflow-x: hidden;
 }
 
 .page {
@@ -24,13 +25,15 @@ body {
 
 .card {
   width: 100%;
-  max-width: 640px;
+  max-width: 660px;
   padding: 32px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 24px 70px rgba(87, 73, 128, 0.18);
   backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 10;
 }
 
 .badge {
@@ -82,25 +85,39 @@ textarea:focus {
 
 .ritual-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .ritual-option {
   border: 1px solid rgba(96, 76, 140, 0.14);
   border-radius: 18px;
-  padding: 14px 10px;
+  padding: 14px 16px;
+  min-height: 78px;
   background: rgba(255, 255, 255, 0.78);
   color: #3b315c;
   cursor: pointer;
   font-weight: 700;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   transition: 0.18s ease;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
 }
 
 .ritual-option .icon {
-  display: block;
-  font-size: 24px;
-  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  font-size: 22px;
+  background: rgba(141, 116, 214, 0.1);
 }
 
 .ritual-option:hover {
@@ -109,7 +126,7 @@ textarea:focus {
 }
 
 .ritual-option.active {
-  background: linear-gradient(135deg, #fff2b8, #eadfff);
+  background: linear-gradient(135deg, #fff7d8, #efe7ff);
   border-color: #8d74d6;
   box-shadow: 0 0 0 4px rgba(141, 116, 214, 0.14);
 }
@@ -127,6 +144,9 @@ textarea:focus {
   background: linear-gradient(135deg, #7b61ff, #a66cff);
   box-shadow: 0 14px 34px rgba(123, 97, 255, 0.25);
   transition: 0.18s ease;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
 }
 
 .main-button:hover {
@@ -135,51 +155,103 @@ textarea:focus {
 }
 
 .magic-zone {
-  height: 140px;
-  margin: 22px 0;
+  height: 160px;
+  margin: 24px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
-.magic-circle {
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #ffffff, #fff2b8 55%, #d9c7ff);
+.magic-portal {
+  position: relative;
+  width: 116px;
+  height: 116px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 38px;
-  box-shadow: 0 0 34px rgba(141, 116, 214, 0.35);
+}
+
+.portal-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 97, 255, 0.45);
+  box-shadow: 0 0 24px rgba(123, 97, 255, 0.22);
+}
+
+.ring-one {
+  width: 112px;
+  height: 112px;
+  background: radial-gradient(circle, rgba(255,255,255,0.82), rgba(217,199,255,0.22), transparent 68%);
+}
+
+.ring-two {
+  width: 78px;
+  height: 78px;
+  border-style: dashed;
+  border-color: rgba(244, 174, 89, 0.65);
+}
+
+.portal-core {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff7d8, #d9c7ff);
+  color: #7b61ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 0 36px rgba(123, 97, 255, 0.35);
 }
 
 .magic-sparkles {
-  margin-top: 12px;
+  margin-top: 10px;
   color: #7b61ff;
   letter-spacing: 12px;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
-.magic-zone.active .magic-circle {
-  animation: pulse 1s ease-in-out 3;
+.magic-zone.active .ring-one {
+  animation: portalSpin 1.6s ease-in-out 2;
+}
+
+.magic-zone.active .ring-two {
+  animation: portalSpinReverse 1.6s ease-in-out 2;
+}
+
+.magic-zone.active .portal-core {
+  animation: portalGlow 1.6s ease-in-out 2;
 }
 
 .magic-zone.active .magic-sparkles {
-  animation: sparkles 1s ease-in-out 3;
+  animation: sparkles 1.6s ease-in-out 2;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.18) rotate(6deg); }
-  100% { transform: scale(1); }
+@keyframes portalSpin {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.75; }
+  50% { transform: scale(1.18) rotate(180deg); opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 0.75; }
+}
+
+@keyframes portalSpinReverse {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(0.92) rotate(-180deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-360deg); opacity: 0.7; }
+}
+
+@keyframes portalGlow {
+  0% { transform: scale(1); box-shadow: 0 0 26px rgba(123, 97, 255, 0.28); }
+  50% { transform: scale(1.12); box-shadow: 0 0 54px rgba(244, 174, 89, 0.55); }
+  100% { transform: scale(1); box-shadow: 0 0 26px rgba(123, 97, 255, 0.28); }
 }
 
 @keyframes sparkles {
-  0% { transform: translateY(0); opacity: 0.5; }
-  50% { transform: translateY(-12px); opacity: 1; }
-  100% { transform: translateY(0); opacity: 0.5; }
+  0% { transform: translateY(0); opacity: 0.45; }
+  50% { transform: translateY(-10px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.45; }
 }
 
 .result {
@@ -249,6 +321,6 @@ textarea:focus {
   }
 
   .ritual-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 }
