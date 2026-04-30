@@ -1,0 +1,218 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  color: #fff;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 214, 165, 0.25), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(169, 132, 255, 0.28), transparent 35%),
+    radial-gradient(circle at 50% 90%, rgba(92, 255, 211, 0.18), transparent 35%),
+    linear-gradient(135deg, #11101f, #171225 45%, #080812);
+  min-height: 100vh;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.card {
+  width: 100%;
+  max-width: 620px;
+  padding: 32px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffe6a7;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-size: 42px;
+}
+
+.subtitle {
+  margin: 0 0 26px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+}
+
+label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 700;
+}
+
+textarea,
+select {
+  width: 100%;
+  border: 0;
+  outline: none;
+  border-radius: 18px;
+  padding: 16px;
+  font-size: 16px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+select option {
+  color: #111;
+}
+
+button {
+  width: 100%;
+  margin-top: 22px;
+  border: 0;
+  border-radius: 18px;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #1a102c;
+  background: linear-gradient(135deg, #ffe6a7, #ffb86b, #d5b3ff);
+  box-shadow: 0 14px 36px rgba(255, 184, 107, 0.25);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.ritual-visual {
+  height: 150px;
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff7c7, #ffb86b 45%, #8b5cf6);
+  box-shadow: 0 0 34px rgba(255, 230, 167, 0.8);
+  opacity: 0.8;
+}
+
+.sparkles {
+  margin-top: 12px;
+  letter-spacing: 12px;
+  color: #ffe6a7;
+  opacity: 0.7;
+}
+
+.active .orb {
+  animation: pulse 1.2s ease-in-out 3;
+}
+
+.active .sparkles {
+  animation: float 1.2s ease-in-out 3;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 24px rgba(255, 230, 167, 0.6); }
+  50% { transform: scale(1.18); box-shadow: 0 0 70px rgba(213, 179, 255, 0.95); }
+  100% { transform: scale(1); box-shadow: 0 0 24px rgba(255, 230, 167, 0.6); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-12px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.5; }
+}
+
+.result {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hidden {
+  display: none;
+}
+
+.luck-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.progress {
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ffe6a7, #ffb86b, #d5b3ff);
+  transition: width 0.8s ease;
+}
+
+#resultText {
+  margin-bottom: 0;
+  line-height: 1.45;
+}
+
+.history {
+  margin-top: 24px;
+}
+
+.history h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.history ul {
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.history li {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+}
