@@ -9,45 +9,37 @@
 <body>
   <main class="page">
     <section class="card">
-      <div class="badge">luck.exe запущен</div>
+      <div class="badge">✨ luck.exe запущен</div>
 
       <h1>Ритуал удачи</h1>
       <p class="subtitle">
-        Введи желание, выбери способ призыва удачи и доверься цифровому хаосу.
+        Загадай, выбери способ усиления шансов — и пусть цифровая магия сделает своё дело.
       </p>
 
       <label for="wish">На что загадываем удачу?</label>
       <textarea id="wish" placeholder="Например: чтобы оффер приняли, дедлайн не сгорел, отпуск одобрили..."></textarea>
 
-      <label for="ritual">Что делаем?</label>
-      <select id="ritual">
-        <option value="energy">✨ Активировать удачу</option>
-        <option value="focus">🧘 Настроить фокус</option>
-        <option value="chance">📈 Подкрутить вероятность</option>
-        <option value="cat">🐈 Погладить виртуального кота</option>
-        <option value="socks">🧦 Надеть счастливые носки</option>
-        <option value="dice">🎲 Бросить кости судьбы</option>
-        <option value="star">🌟 Зафиксировать намерение</option>
-        <option value="reset">🔁 Перезапустить сценарий</option>
-        <option value="boost">🚀 Включить буст</option>
-        <option value="tea">🍵 Заварить спокойствие</option>
-      </select>
+      <label>Выбери действие</label>
 
-      <button id="startBtn">Призвать удачу</button>
+      <div class="ritual-grid" id="ritualGrid">
+        <button class="ritual-card active" data-ritual="energy">✨<span>Активировать удачу</span></button>
+        <button class="ritual-card" data-ritual="chance">📈<span>Подкрутить шансы</span></button>
+        <button class="ritual-card" data-ritual="cat">🐈<span>Погладить кота</span></button>
+        <button class="ritual-card" data-ritual="socks">🧦<span>Надеть носки</span></button>
+        <button class="ritual-card" data-ritual="dice">🎲<span>Бросить кости</span></button>
+        <button class="ritual-card" data-ritual="boost">🚀<span>Включить буст</span></button>
+      </div>
+
+      <button id="startBtn" class="main-button">Призвать удачу</button>
 
       <div class="ritual-visual" id="visual">
-        <div class="orb"></div>
-        <div class="sparkles">✦ ✧ ✦</div>
+        <div class="glow-ring"></div>
+        <div class="orb">🍀</div>
+        <div class="sparkles">✦ ✧ ✦ ✧ ✦</div>
       </div>
 
       <div class="result hidden" id="result">
-        <div class="luck-line">
-          <span>Уровень удачи:</span>
-          <strong id="luckPercent">0%</strong>
-        </div>
-        <div class="progress">
-          <div id="progressBar"></div>
-        </div>
+        <p class="growth" id="growthText"></p>
         <p id="resultText"></p>
       </div>
 
@@ -56,6 +48,8 @@
         <ul id="historyList"></ul>
       </div>
     </section>
+
+    <div id="confetti"></div>
   </main>
 
   <script src="script.js"></script>
