@@ -3,49 +3,49 @@ const startBtn = document.getElementById("startBtn");
 const resultBox = document.getElementById("result");
 const resultText = document.getElementById("resultText");
 const growthText = document.getElementById("growthText");
-const visual = document.getElementById("visual");
+const magicZone = document.getElementById("magicZone");
 const historyList = document.getElementById("historyList");
-const ritualCards = document.querySelectorAll(".ritual-card");
+const ritualOptions = document.querySelectorAll(".ritual-option");
 
 let selectedRitual = "energy";
-let selectedRitualName = "✨ Активировать удачу";
+let selectedRitualName = "Удача";
 
 const ritualTexts = {
   energy: [
-    "Удача активирована. Мироздание слегка подмигнуло.",
-    "Энергия пошла. Всё выглядит подозрительно перспективно."
+    "Удача активирована. Всё стало чуть светлее и подозрительно перспективнее.",
+    "Сигнал отправлен. Удача уже делает вид, что случайно проходила мимо."
   ],
   chance: [
-    "Шансы подкручены. Вероятность успеха ведёт себя бодрее обычного.",
-    "Коэффициент удачи вырос. Excel бы одобрил."
+    "Шансы подкручены. Вероятность успеха выглядит бодрее обычного.",
+    "Коэффициент благоприятного исхода аккуратно повышен."
   ],
   cat: [
-    "Виртуальный кот поглажен. Он мурчит, а значит всё не зря.",
-    "Кот посмотрел с уважением. Это почти благословение, но без пафоса."
-  ],
-  socks: [
-    "Счастливые носки активированы. Даже виртуально они работают.",
-    "Носки на месте. Удача теперь не сможет пройти мимо."
+    "Виртуальный кот поглажен. Он замурчал, а это хороший знак.",
+    "Кот одобрил запрос. Дальше должно быть мягче."
   ],
   dice: [
-    "Кости судьбы брошены. Выпало: «очень даже может быть».",
-    "Судьба кинула кубик и решила не мешать."
+    "Кости судьбы брошены. Выпало что-то очень похожее на хороший вариант.",
+    "Судьба сделала бросок и решила не мешать."
   ],
   boost: [
-    "Буст включён. На ближайшее время шансы выглядят бодрее.",
-    "Режим удачи активирован. Главное — не тратить всё на мелочи."
+    "Буст включён. На ближайшее время шансы выглядят увереннее.",
+    "Режим ускорения активирован. Главное — использовать его красиво."
+  ],
+  calm: [
+    "Спокойствие заварено. Паника поставлена на паузу.",
+    "Фокус собран, лишний шум приглушён. Теперь можно действовать."
   ]
 };
 
-const confettiItems = ["✨", "🍀", "⭐", "💫", "🌈", "🪄"];
+const confettiSymbols = ["✨", "🍀", "⭐", "💫", "🌸", "🪄"];
 
-ritualCards.forEach(card => {
-  card.addEventListener("click", () => {
-    ritualCards.forEach(item => item.classList.remove("active"));
-    card.classList.add("active");
+ritualOptions.forEach(option => {
+  option.addEventListener("click", () => {
+    ritualOptions.forEach(item => item.classList.remove("active"));
+    option.classList.add("active");
 
-    selectedRitual = card.dataset.ritual;
-    selectedRitualName = card.innerText.trim();
+    selectedRitual = option.dataset.ritual;
+    selectedRitualName = option.querySelector("span:last-child").textContent;
   });
 });
 
@@ -54,22 +54,22 @@ function getRandomItem(array) {
 }
 
 function getGrowthPercent() {
-  return Math.floor(Math.random() * 81) + 70; 
+  return Math.floor(Math.random() * 81) + 70;
 }
 
 function launchConfetti() {
-  for (let i = 0; i < 32; i++) {
-    const piece = document.createElement("div");
-    piece.className = "confetti-piece";
-    piece.textContent = getRandomItem(confettiItems);
-    piece.style.left = Math.random() * 100 + "vw";
-    piece.style.animationDelay = Math.random() * 0.4 + "s";
-    piece.style.fontSize = Math.floor(Math.random() * 12 + 16) + "px";
+  for (let i = 0; i < 28; i++) {
+    const item = document.createElement("div");
+    item.className = "confetti";
+    item.textContent = getRandomItem(confettiSymbols);
+    item.style.left = Math.random() * 100 + "vw";
+    item.style.fontSize = Math.floor(Math.random() * 10 + 16) + "px";
+    item.style.animationDelay = Math.random() * 0.35 + "s";
 
-    document.body.appendChild(piece);
+    document.body.appendChild(item);
 
     setTimeout(() => {
-      piece.remove();
+      item.remove();
     }, 2200);
   }
 }
@@ -83,9 +83,7 @@ function saveHistory(wish, ritualName, growth) {
     growth
   });
 
-  const limited = saved.slice(0, 5);
-  localStorage.setItem("luckHistory", JSON.stringify(limited));
-
+  localStorage.setItem("luckHistory", JSON.stringify(saved.slice(0, 5)));
   renderHistory();
 }
 
@@ -95,7 +93,7 @@ function renderHistory() {
 
   saved.forEach(item => {
     const li = document.createElement("li");
-    li.textContent = `${item.ritualName}: «${item.wish}» — успех +${item.growth}%`;
+    li.textContent = `${item.ritualName}: «${item.wish}» — вероятность успеха +${item.growth}%`;
     historyList.appendChild(li);
   });
 }
@@ -110,20 +108,21 @@ function startRitual() {
     return;
   }
 
-  visual.classList.remove("active-visual");
-  void visual.offsetWidth;
-  visual.classList.add("active-visual");
+  magicZone.classList.remove("active");
+  void magicZone.offsetWidth;
+  magicZone.classList.add("active");
 
   const growth = getGrowthPercent();
   const text = getRandomItem(ritualTexts[selectedRitual]);
 
-  resultBox.classList.remove("hidden");
   growthText.textContent = `Вероятность успеха выросла на ${growth}%`;
   resultText.textContent = `${text} Запрос: «${wish}».`;
+  resultBox.classList.remove("hidden");
 
   launchConfetti();
   saveHistory(wish, selectedRitualName, growth);
 }
 
 startBtn.addEventListener("click", startRitual);
+
 renderHistory();
